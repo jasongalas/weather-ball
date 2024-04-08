@@ -10,7 +10,8 @@ const today = dayjs("MM-DD-YYYY");
 
 let cityHistory = [];
 
-const weather = function (latitude, longitude){
+//weather hunter
+const howsTheWeather = function (latitude, longitude){
     const weatherUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=imperial&appid=${weatherAppAPIKey}`
     fetch(weatherUrl).then(function(response2) {
         return response2.json();
@@ -34,56 +35,49 @@ const weather = function (latitude, longitude){
 
 const listCityHistory = function (){
 
-    const storedCityHistory = JSON.parse(localStorage.getItem("cityHistory"));
-    
     cityHistoryContainer.innerHTML = "";
-    for (let index = 0; index < storedCityHistory.length; index++){
+    for (let index = 0; index < cityHistory.length; index++){
+
         const cityButton = document.createElement("button");
         cityButton.setAttribute("type", "button");
         cityButton.setAttribute("class", "btn btn-secondary");
-        cityButton.classList.add("history-button")
-        cityButton.textContent = storedCityHistory[index];
+        cityButton.setAttribute("city-search", cityHistory[index]);
+        cityButton.classList.add("city-button");
+        cityButton.textContent = cityHistory[index];
         cityHistoryContainer.append(cityButton);
     }
 }
-listCityHistory();
 
+//Logs the city that was looked up into the aside
 const weatherHistory = function(cityInput){
-
-    console.log(cityInput);
-
-    if (cityInput === ""){
+    
+    if (cityHistory.indexOf(cityInput) !== -1){
         return;
     }
     
-    // if (cityHistory.indexOf(cityInput !== -1)){
-    //     return;
-    // }
-    
     cityHistory.push(cityInput);
-    console.log(cityHistory, "City History");
     localStorage.setItem("cityHistory", JSON.stringify(cityHistory));
+
     listCityHistory();
 }
 
-//This is our weather hunter
-const howsTheWeather = function (cityInput) {
+//This is our location hunter, using cityInput to get a latitude and longitude
+const wheresTheWeather = function (cityInput) {
 
-    //This is the first fetch quest for the geolocation, latitude & longitude
     const locationUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${cityInput}&appid=${weatherAppAPIKey}`;
     fetch(locationUrl).then(function(response){
         return response.json();
     }).then(function(data){
         
+        //In case the city does not exist
         if(!data[0]){
             alert("City not found!");
         } else {
             console.log(data);
-            console.log(cityInput);
             const latitude = data[0].lat;
             const longitude = data[0].lon;
             weatherHistory(cityInput);
-            weather(latitude, longitude)
+            howsTheWeather(latitude, longitude);
 
         }
     }).catch(function(error){
@@ -97,38 +91,41 @@ const chooseYourCity = function (event){
 
     const cityInput = cityInputEl.value.trim();
     if (cityInput){
-        howsTheWeather(cityInput);
+        wheresTheWeather(cityInput);
     }
 
     cityInputEl.value="";
 }
 
-const init = function(){
-    const storedCityHistory = JSON.parse(localStorage.getItem("cityHistory"));
-    if (storedCityHistory){
-        cityHistory = storedCityHistory;
+const returnToCity = function (event){
+    console.log(event.target)
+
+    if(!event.target.matches(".city-button")){
+        return;
+    } else {
+        const buttonElement = event.target;
+
+        const citySearch = buttonElement.getAttribute("city-search");
+        alert(citySearch)
+    howsTheWeather(citySearch);
     }
-    console.log(storedCityHistory);
+
 }
 
-init()
+const initialize = function(){
+
+    const storedCityHistory = JSON.parse(localStorage.getItem("cityHistory"));
+    if (storedCityHistory) {
+        cityHistory = storedCityHistory;
+    }
+    listCityHistory();
+}
+
+initialize()
 
 cityForm.addEventListener("submit", chooseYourCity);
+cityHistoryContainer.addEventListener("click", returnToCity);
 
-// //Here is the function to figure out the weather
-// const howsTheWeather = function(){
-
-//     
-    
-
-//         //This is where we nest into the next fetch quest, for the weather
-       
-
-//             }
-//         })
-
-//     })
-// }
 
 // const sameDayForecast = function(forecast){
 //     const sameDayWeatherCard = {
