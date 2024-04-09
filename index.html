@@ -18,47 +18,28 @@
 
     <main class="container">
         <section class="row">
-            <aside class="col-sm-12 col-lg-4">
+            <aside class="col-sm-12 col-lg-3">
                 <!-- City Search Form -->
-                <form class="form" id="city-form">
-                    <div>
-                        <input type="text" class="form-input" id="city-input" placeholder="Pick A City">
+                <form id="city-form" class="form">
+                    <div class="input-field">
+                        <input class="form-input" style="width: 100%" type="text" id="city-input" placeholder="Pick A City">
                     </div>
-                    <div>
-                        <button type="submit" class="btn btn-light" id="search-button">How's The Weather?</button>
+                    <div class = "button-field">
+                        <button type="submit" style ="width: 100%"class="btn btn-danger" id="search-button">How's The Weather?</button>
                     </div>
                     <hr/>
                 </form>
             <!-- Search History -->
-            <section class="container">
-                <div id="city-history" class = "row py-2"></div>
-            </section>
-            </div>
+                <section class="container" >
+                    <div id="city-history" class="row"></div>
+                </section>
             </aside>
         </section>
 
-        <!-- Single day forecast -->
-        <section class="col-sm-12 col-lg-8">
-            <div>
-                <div id="todays-weather" class="weather-card"></div>
-                    <div class="card-title mb-1">
-                        <h2>Today's Forecast:</h2>
-                    </div>
-                    <div class="card-body bg-light">
-                        <div id="todays-weather-card"></div>
-                </div>
-             </div>
-        
-        <!-- Five day forecast -->
-             <div class="col-sm-12 col-lg-8 d-flex">
-                <div id="five-day-weather" class="weather-card">
-                    <div class="card-title mb-1"></div>
-                        <h2>5 Day Forecast:</h2>
-                    <div class="card-body bg-light">
-                        <div id="five-day-weather-cards"></div>
-                    </div>
-                </div>
-            </div>
+        <!-- Weather -->
+        <section class="col-sm-12 col-lg-9">
+            <section id="todays-weather"></section>
+            <section id="five-day-weather" class="row"></section>
         </section>
     </main>
     <footer class="text-center">&copy;<a href="https://jasongalas.github.io/coding-portfolio/">Paws Production 🐾</a></footer>
