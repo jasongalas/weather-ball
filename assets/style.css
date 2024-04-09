@@ -21,5 +21,9 @@ header{
 }
 
 .btn-secondary{
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+}
+
+#todays-weather{
+  margin-bottom: 15px;
 }
